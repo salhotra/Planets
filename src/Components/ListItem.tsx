@@ -8,6 +8,7 @@ import {
   Dimensions,
 } from "react-native";
 
+import Images from "../Images";
 import { LIST_ITEM_HEIGHT } from "../constants";
 
 const window = Dimensions.get("window");
@@ -21,7 +22,6 @@ const styles = StyleSheet.create({
   planet: {
     height: 120,
     width: 120,
-    borderRadius: 60,
     position: "absolute",
   },
   name: {
@@ -85,6 +85,14 @@ const ListItem = ({ planet, index, onPressCallback }) => {
     }),
   };
 
+  const planetWithRingAnimatedStyles = {
+    left: planetAnimation.x.interpolate({
+      inputRange: [-30, window.width / 2 - 60],
+      outputRange: [-70, window.width / 2 - 100],
+    }),
+    top: planetAnimation.y,
+  }
+
   return (
     <TouchableWithoutFeedback onPress={handlePress}>
       <Animated.View
@@ -94,12 +102,14 @@ const ListItem = ({ planet, index, onPressCallback }) => {
           animatedStyles,
         ]}
       >
-        <Animated.View
+        <Animated.Image
+          source={Images[planet.name.toLowerCase()] || Images.mercury}
           style={[
             styles.planet,
-            { backgroundColor: planet.color },
-            planetAnimationStyles,
+            { backgroundColor: planet.backgroundColor },
+            planet.name === 'Neptune' ? { width: 200, ...planetWithRingAnimatedStyles } : planetAnimationStyles
           ]}
+          resizeMode={'contain'}
         />
         <Animated.View style={[styles.name, planetNameStyles]}>
           <Text style={styles.nameText}>{planet.name}</Text>

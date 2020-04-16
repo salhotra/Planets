@@ -8,10 +8,10 @@ const planets = [
   { name: "Venus", color: "silver", backgroundColor: 'purple' },
   { name: "Earth", color: "blue", backgroundColor: 'darkblue' },
   { name: "Mars", color: "red", backgroundColor: 'darkred' },
-  { name: "Jupitor", color: "teal", backgroundColor: 'lightgreen' },
+  { name: "Jupiter", color: "teal", backgroundColor: 'lightgreen' },
   { name: "Saturn", color: "yellow", backgroundColor: 'orange' },
-  { name: "Uranus", color: "green", backgroundColor: 'blue' },
-  { name: "Neptune", color: "lightblue", backgroundColor: 'red' },
+  { name: "Uranus", color: "green", backgroundColor: 'skyblue' },
+  { name: "Neptune", color: "lightblue", backgroundColor: 'lightblue' },
 ];
 
 const App = () => {
