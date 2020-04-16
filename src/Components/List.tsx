@@ -35,7 +35,7 @@ const List = ({ data }) => {
   const handleItemPress = (isOpen, index) => {
     return Animated.timing(animation, {
       toValue: isOpen ? (index + 1) * -LIST_ITEM_HEIGHT : 0,
-      duration: 450
+      duration: 280
     });
   }
 
