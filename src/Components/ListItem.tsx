@@ -1,11 +1,10 @@
 import React, { useRef, useState } from "react";
 import {
-  View,
   Text,
   StyleSheet,
   Animated,
-  TouchableWithoutFeedback,
   Dimensions,
+  TouchableOpacity,
 } from "react-native";
 
 import Images from "../Images";
@@ -50,21 +49,21 @@ const ListItem = ({ planet, index, onPressCallback }) => {
     const parallelAnimations = [
       Animated.timing(heightAnimation, {
         toValue: isOpen ? LIST_ITEM_HEIGHT : window.height,
-        duration: 280,
+        duration: 350,
       }),
       onPressCallback(!isOpen, index),
       Animated.timing(planetAnimation, {
         toValue: isOpen
           ? { x: -30, y: -8 }
           : { x: window.width / 2 - 60, y: window.height / 2 - 60 },
-        duration: 280,
+        duration: 350,
       }),
     ];
 
     if (isOpen) {
       const closingRotationAnimation = Animated.timing(planetRotation, {
         toValue: 0,
-        duration: 280,
+        duration: 350,
       });
 
       Animated.parallel([
@@ -137,30 +136,36 @@ const ListItem = ({ planet, index, onPressCallback }) => {
   }
 
   return (
-    <TouchableWithoutFeedback onPress={handlePress}>
-      <Animated.View
-        style={[
-          styles.container,
-          { backgroundColor: planet.backgroundColor },
-          animatedStyles,
-        ]}
-      >
+    <TouchableOpacity onPress={handlePress} activeOpacity={1}>
+      <>
         <Animated.Image
-          source={Images[planet.name.toLowerCase()] || Images.mercury}
-          style={[
-            styles.planet,
-            { backgroundColor: planet.backgroundColor },
-            planet.name === "Neptune"
-              ? { width: 200, ...planetWithRingAnimatedStyles, ...planetWithRingRotationAnimatedStyles }
-              : { ...planetAnimationStyles, ...planetRotationAnimatedStyles },
-          ]}
-          resizeMode={"contain"}
+          source={planet.background}
+          style={[{position: 'absolute', height: window.height, width: window.width}]}
+          resizeMode={'cover'}
         />
-        <Animated.View style={[styles.name, planetNameStyles]}>
-          <Text style={styles.nameText}>{planet.name}</Text>
+        <Animated.View
+          style={[
+            styles.container,
+            animatedStyles,
+          ]}
+        >
+          <Animated.Image
+            source={Images[planet.name.toLowerCase()]}
+            style={[
+              styles.planet,
+              { backgroundColor: planet.backgroundColor },
+              planet.hasRing
+                ? { width: 200, ...planetWithRingAnimatedStyles, ...planetWithRingRotationAnimatedStyles }
+                : { ...planetAnimationStyles, ...planetRotationAnimatedStyles },
+            ]}
+            resizeMode={"contain"}
+          />
+          <Animated.View style={[styles.name, planetNameStyles]}>
+            <Text style={styles.nameText}>{planet.name}</Text>
+          </Animated.View>
         </Animated.View>
-      </Animated.View>
-    </TouchableWithoutFeedback>
+      </>
+    </TouchableOpacity>
   );
 };
 

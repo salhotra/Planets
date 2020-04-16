@@ -1,5 +1,5 @@
 import React, { useRef, useEffect } from "react";
-import { Animated, Dimensions, View, StatusBar, Text, StyleSheet } from "react-native";
+import { Animated, Dimensions, View, StatusBar, Text, StyleSheet, Platform } from "react-native";
 
 import ListItem from "./ListItem";
 import { LIST_ITEM_HEIGHT } from "../constants";
@@ -35,7 +35,7 @@ const List = ({ data }) => {
   const handleItemPress = (isOpen, index) => {
     return Animated.timing(animation, {
       toValue: isOpen ? (index + 1) * -LIST_ITEM_HEIGHT : 0,
-      duration: 280
+      duration: 350
     });
   }
 
@@ -57,19 +57,17 @@ const List = ({ data }) => {
   });
 
   return (
-    <>
-      <Animated.View style={styles.headerTextContainer}>
-        <Text style={styles.headerText}>Planets</Text>
-      </Animated.View>
-      <Animated.View style={viewStyles}>
-        <Animated.ScrollView style={[animatedStyles]}>
-          <View style={styles.header} />
-          {data.map((item, index) => {
-            return <ListItem key={`${index}`} planet={item} index={index} onPressCallback={handleItemPress} />;
-          })}
-        </Animated.ScrollView>
-      </Animated.View>
-    </>
+    <Animated.View style={viewStyles}>
+      <Animated.ScrollView style={[animatedStyles]} showsVerticalScrollIndicator={false}>
+        <View style={styles.header} />
+        <Animated.View style={styles.headerTextContainer}>
+          <Text style={styles.headerText}>Planets</Text>
+        </Animated.View>
+        {data.map((item, index) => {
+          return <ListItem key={`${index}`} planet={item} index={index} onPressCallback={handleItemPress} />;
+        })}
+      </Animated.ScrollView>
+    </Animated.View>
   );
 };
 
