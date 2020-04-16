@@ -40,8 +40,6 @@ const ListItem = ({ planet, index, onPressCallback }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const heightAnimation = useRef(new Animated.Value(LIST_ITEM_HEIGHT)).current;
-  const planetAnimation = useRef(new Animated.ValueXY({ x: -30, y: -8 }))
-    .current;
   const planetRotation = useRef(new Animated.Value(0)).current;
 
   const handlePress = async () => {
@@ -52,12 +50,6 @@ const ListItem = ({ planet, index, onPressCallback }) => {
         duration: 350,
       }),
       onPressCallback(!isOpen, index),
-      Animated.timing(planetAnimation, {
-        toValue: isOpen
-          ? { x: -30, y: -8 }
-          : { x: window.width / 2 - 60, y: window.height / 2 - 60 },
-        duration: 350,
-      }),
     ];
 
     if (isOpen) {
@@ -90,30 +82,14 @@ const ListItem = ({ planet, index, onPressCallback }) => {
   };
 
   const planetAnimationStyles = {
-    left: planetAnimation.x,
-    top: planetAnimation.y,
-  };
-
-  const planetNameStyles = {
-    right: planetAnimation.x.interpolate({
-      inputRange: [-30, window.width / 2 - 60],
-      outputRange: [0, window.width / 2 - 60],
+    left: heightAnimation.interpolate({
+      inputRange: [LIST_ITEM_HEIGHT, window.height],
+      outputRange: [-30, window.width / 2 - 90],
     }),
-    top: planetAnimation.y.interpolate({
-      inputRange: [-8, window.height / 2 - 60],
-      outputRange: [0, window.height / 2 - 60],
+    top: heightAnimation.interpolate({
+      inputRange: [LIST_ITEM_HEIGHT, window.height],
+      outputRange: [-8, window.height / 3],
     }),
-  };
-
-  const planetWithRingAnimatedStyles = {
-    left: planetAnimation.x.interpolate({
-      inputRange: [-30, window.width / 2 - 60],
-      outputRange: [-70, window.width / 2 - 100],
-    }),
-    top: planetAnimation.y,
-  };
-
-  const planetRotationAnimatedStyles = {
     transform: [
       {
         rotate: planetRotation.interpolate({
@@ -121,10 +97,26 @@ const ListItem = ({ planet, index, onPressCallback }) => {
           outputRange: ['0deg', '60deg'],
         })
       }
-    ]
-  }
+    ],
+    height: heightAnimation.interpolate({
+      inputRange: [LIST_ITEM_HEIGHT, window.height],
+      outputRange: [120, 180],
+    }),
+    width: heightAnimation.interpolate({
+      inputRange: [LIST_ITEM_HEIGHT, window.height],
+      outputRange: [120, 180],
+    })
+  };
 
-  const planetWithRingRotationAnimatedStyles = {
+  const planetWithRingAnimatedStyles = {
+    left: heightAnimation.interpolate({
+      inputRange: [LIST_ITEM_HEIGHT, window.height],
+      outputRange: [-70, window.width / 2 - 130],
+    }),
+    top: heightAnimation.interpolate({
+      inputRange: [LIST_ITEM_HEIGHT, window.height],
+      outputRange: [-8, window.height / 3],
+    }),
     transform: [
       {
         rotate: planetRotation.interpolate({
@@ -132,8 +124,31 @@ const ListItem = ({ planet, index, onPressCallback }) => {
           outputRange: ['0deg', '360deg'],
         })
       }
-    ]
+    ],
+    height: heightAnimation.interpolate({
+      inputRange: [LIST_ITEM_HEIGHT, window.height],
+      outputRange: [120, 180],
+    }),
+    width: heightAnimation.interpolate({
+      inputRange: [LIST_ITEM_HEIGHT, window.height],
+      outputRange: [200, 260],
+    })
+  };
+
+  const planetSizeAnimation = {
+
   }
+
+  const planetNameStyles = {
+    right: heightAnimation.interpolate({
+      inputRange: [LIST_ITEM_HEIGHT, window.height],
+      outputRange: [0, window.width / 2 - 60],
+    }),
+    top: heightAnimation.interpolate({
+      inputRange: [LIST_ITEM_HEIGHT, window.height],
+      outputRange: [0, window.height / 2],
+    }),
+  };
 
   return (
     <TouchableOpacity onPress={handlePress} activeOpacity={1}>
@@ -154,9 +169,8 @@ const ListItem = ({ planet, index, onPressCallback }) => {
             style={[
               styles.planet,
               { backgroundColor: planet.backgroundColor },
-              planet.hasRing
-                ? { width: 200, ...planetWithRingAnimatedStyles, ...planetWithRingRotationAnimatedStyles }
-                : { ...planetAnimationStyles, ...planetRotationAnimatedStyles },
+              planet.hasRing ? planetWithRingAnimatedStyles : planetAnimationStyles,
+              planetSizeAnimation,
             ]}
             resizeMode={"contain"}
           />
