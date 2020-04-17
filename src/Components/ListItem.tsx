@@ -49,16 +49,7 @@ const styles = StyleSheet.create({
   },
   nameText: {
     fontSize: 20,
-    color: "#fefefe",
-
-    shadowColor: "#222",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.3,
-    shadowRadius: 3,
-    elevation: 4,
+    color: "rgba(255, 255, 255, 0.9)",
   },
 });
 
@@ -95,17 +86,17 @@ const ListItem = ({ planet, index, onPressCallback }) => {
       ]).start();
     } else {
       Animated.sequence([
-        Animated.parallel(parallelAnimations),
         Animated.parallel([
+          ...parallelAnimations,
           Animated.timing(planetRotation, {
             toValue: 1,
             duration: 1500,
           }),
-          Animated.timing(showPlanetDataAnimation, {
-            toValue: 1,
-            duration: 500,
-          }),
-        ])
+        ]),
+        Animated.timing(showPlanetDataAnimation, {
+          toValue: 1,
+          duration: 500,
+        }),
       ]).start();
     }
   };
@@ -125,7 +116,7 @@ const ListItem = ({ planet, index, onPressCallback }) => {
     }),
     top: heightAnimation.interpolate({
       inputRange: [LIST_ITEM_HEIGHT, window.height],
-      outputRange: [-8, window.height / 3],
+      outputRange: [-8, window.height / 5],
     }),
     transform: [
       {
@@ -152,7 +143,7 @@ const ListItem = ({ planet, index, onPressCallback }) => {
     }),
     top: heightAnimation.interpolate({
       inputRange: [LIST_ITEM_HEIGHT, window.height],
-      outputRange: [-8, window.height / 3],
+      outputRange: [-8, window.height / 5],
     }),
     transform: [
       {
@@ -179,7 +170,7 @@ const ListItem = ({ planet, index, onPressCallback }) => {
     }),
     top: heightAnimation.interpolate({
       inputRange: [LIST_ITEM_HEIGHT, window.height],
-      outputRange: [0, window.height / 3 + 120 + 20],
+      outputRange: [0, window.height / 5 + 120 + 25],
     }),
   };
 
