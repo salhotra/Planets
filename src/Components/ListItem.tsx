@@ -17,11 +17,27 @@ const styles = StyleSheet.create({
     height: LIST_ITEM_HEIGHT,
     alignItems: "center",
     overflow: "hidden",
+
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.3,
+    shadowRadius: 3,
   },
   planet: {
     height: 120,
     width: 120,
     position: "absolute",
+
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.3,
+    shadowRadius: 3,
   },
   name: {
     position: "absolute",
@@ -32,7 +48,16 @@ const styles = StyleSheet.create({
   },
   nameText: {
     fontSize: 20,
-    color: "white",
+    color: "#fefefe",
+
+    shadowColor: "#222",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.3,
+    shadowRadius: 3,
+    elevation: 4,
   },
 });
 
@@ -60,7 +85,7 @@ const ListItem = ({ planet, index, onPressCallback }) => {
 
       Animated.parallel([
         ...parallelAnimations,
-        closingRotationAnimation
+        closingRotationAnimation,
       ]).start();
     } else {
       Animated.sequence([
@@ -94,9 +119,9 @@ const ListItem = ({ planet, index, onPressCallback }) => {
       {
         rotate: planetRotation.interpolate({
           inputRange: [0, 1],
-          outputRange: ['0deg', '60deg'],
-        })
-      }
+          outputRange: ["0deg", "60deg"],
+        }),
+      },
     ],
     height: heightAnimation.interpolate({
       inputRange: [LIST_ITEM_HEIGHT, window.height],
@@ -105,7 +130,7 @@ const ListItem = ({ planet, index, onPressCallback }) => {
     width: heightAnimation.interpolate({
       inputRange: [LIST_ITEM_HEIGHT, window.height],
       outputRange: [120, 180],
-    })
+    }),
   };
 
   const planetWithRingAnimatedStyles = {
@@ -121,9 +146,9 @@ const ListItem = ({ planet, index, onPressCallback }) => {
       {
         rotate: planetRotation.interpolate({
           inputRange: [0, 1],
-          outputRange: ['0deg', '360deg'],
-        })
-      }
+          outputRange: ["0deg", "360deg"],
+        }),
+      },
     ],
     height: heightAnimation.interpolate({
       inputRange: [LIST_ITEM_HEIGHT, window.height],
@@ -132,12 +157,8 @@ const ListItem = ({ planet, index, onPressCallback }) => {
     width: heightAnimation.interpolate({
       inputRange: [LIST_ITEM_HEIGHT, window.height],
       outputRange: [200, 260],
-    })
+    }),
   };
-
-  const planetSizeAnimation = {
-
-  }
 
   const planetNameStyles = {
     right: heightAnimation.interpolate({
@@ -146,7 +167,14 @@ const ListItem = ({ planet, index, onPressCallback }) => {
     }),
     top: heightAnimation.interpolate({
       inputRange: [LIST_ITEM_HEIGHT, window.height],
-      outputRange: [0, window.height / 2],
+      outputRange: [0, window.height / 3 + 120 + 20],
+    }),
+  };
+
+  const planetNameTextStyles = {
+    fontSize: heightAnimation.interpolate({
+      inputRange: [LIST_ITEM_HEIGHT, window.height],
+      outputRange: [20, 25],
     }),
   };
 
@@ -155,27 +183,31 @@ const ListItem = ({ planet, index, onPressCallback }) => {
       <>
         <Animated.Image
           source={planet.background}
-          style={[{position: 'absolute', height: window.height, width: window.width}]}
-          resizeMode={'cover'}
-        />
-        <Animated.View
           style={[
-            styles.container,
-            animatedStyles,
+            {
+              position: "absolute",
+              height: window.height,
+              width: window.width,
+            },
           ]}
-        >
+          resizeMode={"cover"}
+        />
+        <Animated.View style={[styles.container, animatedStyles]}>
           <Animated.Image
             source={Images[planet.name.toLowerCase()]}
             style={[
               styles.planet,
               { backgroundColor: planet.backgroundColor },
-              planet.hasRing ? planetWithRingAnimatedStyles : planetAnimationStyles,
-              planetSizeAnimation,
+              planet.hasRing
+                ? planetWithRingAnimatedStyles
+                : planetAnimationStyles,
             ]}
             resizeMode={"contain"}
           />
           <Animated.View style={[styles.name, planetNameStyles]}>
-            <Text style={styles.nameText}>{planet.name}</Text>
+            <Animated.Text style={[styles.nameText, planetNameTextStyles]}>
+              {planet.name}
+            </Animated.Text>
           </Animated.View>
         </Animated.View>
       </>
