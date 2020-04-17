@@ -4,7 +4,7 @@ export const planets = [
     color: "orange",
     hasRing: false,
     background: require("../assets/Images/mercury_bg.jpg"),
-    tagline: 'Mercury is hot, but not too hot for ice,',
+    tagline: 'Mercury is the closest planet to the sun, but ice exists on it.',
   },
   {
     name: "Venus",

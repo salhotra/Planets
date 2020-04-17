@@ -17,6 +17,7 @@ const styles = StyleSheet.create({
     height: LIST_ITEM_HEIGHT,
     alignItems: "center",
     overflow: "hidden",
+    padding: 10,
 
     shadowColor: "#000",
     shadowOffset: {
@@ -66,6 +67,7 @@ const ListItem = ({ planet, index, onPressCallback }) => {
 
   const heightAnimation = useRef(new Animated.Value(LIST_ITEM_HEIGHT)).current;
   const planetRotation = useRef(new Animated.Value(0)).current;
+  const showPlanetDataAnimation = useRef(new Animated.Value(0)).current;
 
   const handlePress = async () => {
     setIsOpen(!isOpen);
@@ -84,16 +86,26 @@ const ListItem = ({ planet, index, onPressCallback }) => {
       });
 
       Animated.parallel([
+        Animated.timing(showPlanetDataAnimation, {
+          toValue: 0,
+          duration: 0,
+        }),
         ...parallelAnimations,
         closingRotationAnimation,
       ]).start();
     } else {
       Animated.sequence([
         Animated.parallel(parallelAnimations),
-        Animated.timing(planetRotation, {
-          toValue: 1,
-          duration: 1500,
-        }),
+        Animated.parallel([
+          Animated.timing(planetRotation, {
+            toValue: 1,
+            duration: 1500,
+          }),
+          Animated.timing(showPlanetDataAnimation, {
+            toValue: 1,
+            duration: 500,
+          }),
+        ])
       ]).start();
     }
   };
@@ -178,6 +190,10 @@ const ListItem = ({ planet, index, onPressCallback }) => {
     }),
   };
 
+  const planetDataTextAnimatedStyles = {
+    opacity: showPlanetDataAnimation,
+  };
+
   return (
     <TouchableOpacity onPress={handlePress} activeOpacity={1}>
       <>
@@ -193,6 +209,15 @@ const ListItem = ({ planet, index, onPressCallback }) => {
           resizeMode={"cover"}
         />
         <Animated.View style={[styles.container, animatedStyles]}>
+          <Animated.Text
+            style={[
+              styles.nameText,
+              { textAlign: "center", lineHeight: 25, marginTop: 20 },
+              planetDataTextAnimatedStyles,
+            ]}
+          >
+            {planet.tagline}
+          </Animated.Text>
           <Animated.Image
             source={Images[planet.name.toLowerCase()]}
             style={[
