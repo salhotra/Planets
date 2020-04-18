@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "HelloWorld",
+    "name": "Planets",
     "slug": "react-native-planets",
     "platforms": [
       "ios",
@@ -22,7 +22,13 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": false,
+      "bundleIdentifier": "com.nishantsalhotra.planets",
+      "buildNumber": "1.0.0"
+    },
+    "android": {
+      "package": "com.nishantsalhotra.planets",
+      "versionCode": 1
     }
   }
 }
