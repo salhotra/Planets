@@ -7,6 +7,8 @@ import {
   TouchableOpacity,
 } from "react-native";
 
+import PositionInSolarSystem from "./PositionInSolarSystem";
+
 import Images from "../Images";
 import { LIST_ITEM_HEIGHT } from "../constants";
 
@@ -51,6 +53,14 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: "rgba(255, 255, 255, 0.9)",
   },
+  solarSystemPositionContainer: {
+    height: 80,
+    position: "absolute",
+    bottom: 0,
+    width: window.width,
+    paddingHorizontal: 20,
+    paddingVertical: 10
+  },
 });
 
 const ListItem = ({ planet, index, onPressCallback }) => {
@@ -90,7 +100,7 @@ const ListItem = ({ planet, index, onPressCallback }) => {
           ...parallelAnimations,
           Animated.timing(planetRotation, {
             toValue: 1,
-            duration: 1500,
+            duration: 900,
           }),
         ]),
         Animated.timing(showPlanetDataAnimation, {
@@ -181,7 +191,7 @@ const ListItem = ({ planet, index, onPressCallback }) => {
     }),
   };
 
-  const planetDataTextAnimatedStyles = {
+  const planetInfoAnimatedStyles = {
     opacity: showPlanetDataAnimation,
   };
 
@@ -203,11 +213,11 @@ const ListItem = ({ planet, index, onPressCallback }) => {
           <Animated.Text
             style={[
               styles.nameText,
-              { textAlign: "center", lineHeight: 25, marginTop: 20 },
-              planetDataTextAnimatedStyles,
+              { fontSize: 22, textAlign: "center", lineHeight: 25, marginTop: 20 },
+              planetInfoAnimatedStyles,
             ]}
           >
-            {planet.tagline}
+            {planet.nickName}
           </Animated.Text>
           <Animated.Image
             source={Images[planet.name.toLowerCase()]}
@@ -220,10 +230,27 @@ const ListItem = ({ planet, index, onPressCallback }) => {
             ]}
             resizeMode={"contain"}
           />
+
           <Animated.View style={[styles.name, planetNameStyles]}>
             <Animated.Text style={[styles.nameText, planetNameTextStyles]}>
               {planet.name}
             </Animated.Text>
+          </Animated.View>
+
+          <Animated.Text
+            style={[
+              styles.nameText,
+              { textAlign: "center", lineHeight: 25, marginTop: 20, position: 'absolute', bottom: 120 },
+              planetInfoAnimatedStyles,
+            ]}
+          >
+            {planet.tagline}
+          </Animated.Text>
+
+          <Animated.View style={[styles.solarSystemPositionContainer, planetInfoAnimatedStyles]}>
+            <PositionInSolarSystem highlightIndex={index} />
+
+            <Text style={[styles.nameText, {fontSize: 16, textAlign: 'center', marginTop: 15}]}>1 Year = {planet.lengthOfYear}</Text>
           </Animated.View>
         </Animated.View>
       </>
