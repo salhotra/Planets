@@ -11,6 +11,7 @@ import PositionInSolarSystem from "./PositionInSolarSystem";
 
 import Images from "../Images";
 import { LIST_ITEM_HEIGHT } from "../constants";
+import Colors from "../Colors";
 
 const window = Dimensions.get("window");
 
@@ -51,7 +52,7 @@ const styles = StyleSheet.create({
   },
   nameText: {
     fontSize: 20,
-    color: "rgba(255, 255, 255, 0.9)",
+    color: Colors.offWhite,
   },
   solarSystemPositionContainer: {
     height: 80,

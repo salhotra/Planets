@@ -2,6 +2,7 @@ import React, { Fragment } from "react";
 import { View, StyleSheet } from "react-native";
 
 import { planets } from "../planetData";
+import Colors from "../Colors";
 
 const styles = StyleSheet.create({
   container: {
@@ -17,14 +18,14 @@ const styles = StyleSheet.create({
   joiningLine: {
     flex: 1,
     height: 1,
-    backgroundColor: '#e1e1e1',
+    backgroundColor: Colors.lightGrey,
   }
 });
 
 const HighlightedIndex = ({
   highlightIndex,
   itemSize = 8,
-  borderColor = "#e1e1e1",
+  borderColor = Colors.lightGrey,
   highlightColor = "white",
 }) => {
   const dynamicPlanetStyles = {
