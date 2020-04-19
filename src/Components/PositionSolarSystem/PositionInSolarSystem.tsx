@@ -1,28 +1,18 @@
 import React, { Fragment } from "react";
-import { View, StyleSheet } from "react-native";
+import { View } from "react-native";
 
-import { planets } from "../planetData";
-import Colors from "../Colors";
+import { planets } from "../../Config/planetData";
+import Colors from "../../Config/Colors";
+import styles from "./PositionInSolarSystemStyles";
 
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  planet: {
-    borderWidth: 1,
-  },
-  sun: {
-    backgroundColor: "orange",
-  },
-  joiningLine: {
-    flex: 1,
-    height: 1,
-    backgroundColor: Colors.lightGrey,
-  }
-});
+interface PositionInSolarSystemProps {
+  highlightIndex: number;
+  itemSize?: number;
+  borderColor?: string;
+  highlightColor?: string;
+}
 
-const HighlightedIndex = ({
+const PositionInSolarSystem: React.SFC<PositionInSolarSystemProps> = ({
   highlightIndex,
   itemSize = 8,
   borderColor = Colors.lightGrey,
@@ -65,4 +55,4 @@ const HighlightedIndex = ({
   );
 };
 
-export default HighlightedIndex;
+export default PositionInSolarSystem;

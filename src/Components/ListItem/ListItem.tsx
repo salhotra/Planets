@@ -1,77 +1,35 @@
 import React, { useRef, useState } from "react";
-import {
-  Text,
-  StyleSheet,
-  Animated,
-  Dimensions,
-  TouchableOpacity,
-} from "react-native";
+import { Text, Animated, TouchableOpacity } from "react-native";
 
-import PositionInSolarSystem from "./PositionInSolarSystem";
+import PositionInSolarSystem from "../PositionSolarSystem";
+import styles from "./ListItemStyles";
 
-import Images from "../Images";
-import { LIST_ITEM_HEIGHT } from "../constants";
-import Colors from "../Colors";
+import type { PlanetDataItemType } from "../../Config/planetData";
+import { ItemPressCallbackType } from "../List/List";
+import { LIST_ITEM_HEIGHT, window } from "../../Config/constants";
+import Images from "../../Config/Images";
 
-const window = Dimensions.get("window");
+interface ListItemProps {
+  index: number;
+  planet: PlanetDataItemType;
+  onPressCallback: ItemPressCallbackType;
+}
 
-const styles = StyleSheet.create({
-  container: {
-    height: LIST_ITEM_HEIGHT,
-    alignItems: "center",
-    overflow: "hidden",
-    padding: 10,
+const ListItem: React.SFC<ListItemProps> = ({
+  planet,
+  index,
+  onPressCallback,
+}) => {
+  const [isOpen, setIsOpen] = useState<boolean>(false);
 
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.3,
-    shadowRadius: 3,
-  },
-  planet: {
-    height: 120,
-    width: 120,
-    position: "absolute",
+  const heightAnimation = useRef<Animated.Value>(
+    new Animated.Value(LIST_ITEM_HEIGHT)
+  ).current;
+  const planetRotation = useRef<Animated.Value>(new Animated.Value(0)).current;
+  const showPlanetDataAnimation = useRef<Animated.Value>(new Animated.Value(0))
+    .current;
 
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.3,
-    shadowRadius: 3,
-  },
-  name: {
-    position: "absolute",
-    height: 120,
-    width: 120,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  nameText: {
-    fontSize: 20,
-    color: Colors.offWhite,
-  },
-  solarSystemPositionContainer: {
-    height: 80,
-    position: "absolute",
-    bottom: 0,
-    width: window.width,
-    paddingHorizontal: 20,
-    paddingVertical: 10
-  },
-});
-
-const ListItem = ({ planet, index, onPressCallback }) => {
-  const [isOpen, setIsOpen] = useState(false);
-
-  const heightAnimation = useRef(new Animated.Value(LIST_ITEM_HEIGHT)).current;
-  const planetRotation = useRef(new Animated.Value(0)).current;
-  const showPlanetDataAnimation = useRef(new Animated.Value(0)).current;
-
-  const handlePress = async () => {
+  const handlePress: () => void = () => {
     setIsOpen(!isOpen);
     const parallelAnimations = [
       Animated.timing(heightAnimation, {
@@ -214,7 +172,12 @@ const ListItem = ({ planet, index, onPressCallback }) => {
           <Animated.Text
             style={[
               styles.nameText,
-              { fontSize: 22, textAlign: "center", lineHeight: 25, marginTop: 20 },
+              {
+                fontSize: 22,
+                textAlign: "center",
+                lineHeight: 25,
+                marginTop: 20,
+              },
               planetInfoAnimatedStyles,
             ]}
           >
@@ -224,7 +187,6 @@ const ListItem = ({ planet, index, onPressCallback }) => {
             source={Images[planet.name.toLowerCase()]}
             style={[
               styles.planet,
-              { backgroundColor: planet.backgroundColor },
               planet.hasRing
                 ? planetWithRingAnimatedStyles
                 : planetAnimationStyles,
@@ -241,17 +203,35 @@ const ListItem = ({ planet, index, onPressCallback }) => {
           <Animated.Text
             style={[
               styles.nameText,
-              { textAlign: "center", lineHeight: 25, marginTop: 20, position: 'absolute', bottom: 120 },
+              {
+                textAlign: "center",
+                lineHeight: 25,
+                marginTop: 20,
+                position: "absolute",
+                bottom: 120,
+              },
               planetInfoAnimatedStyles,
             ]}
           >
             {planet.tagline}
           </Animated.Text>
 
-          <Animated.View style={[styles.solarSystemPositionContainer, planetInfoAnimatedStyles]}>
+          <Animated.View
+            style={[
+              styles.solarSystemPositionContainer,
+              planetInfoAnimatedStyles,
+            ]}
+          >
             <PositionInSolarSystem highlightIndex={index} />
 
-            <Text style={[styles.nameText, {fontSize: 16, textAlign: 'center', marginTop: 15}]}>1 Year = {planet.lengthOfYear}</Text>
+            <Text
+              style={[
+                styles.nameText,
+                { fontSize: 16, textAlign: "center", marginTop: 15 },
+              ]}
+            >
+              1 Year = {planet.lengthOfYear}
+            </Text>
           </Animated.View>
         </Animated.View>
       </>

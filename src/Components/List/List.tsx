@@ -1,62 +1,45 @@
-import React, { useRef, useEffect, useState, createRef } from "react";
-import {
-  Animated,
-  Dimensions,
-  View,
-  StatusBar,
-  Text,
-  StyleSheet,
-} from "react-native";
+import React, { useRef, useEffect, useState } from "react";
+import { Animated, Dimensions, View, StatusBar, Text } from "react-native";
 
-import ListItem from "./ListItem";
-import { LIST_ITEM_HEIGHT } from "../constants";
+import type { PlanetDataType } from "../../Config/planetData";
+import { LIST_ITEM_HEIGHT } from "../../Config/constants";
+import ListItem from "../ListItem";
+import styles from "./ListStyles";
 
 const window = Dimensions.get("window");
 
-const styles = StyleSheet.create({
-  header: {
-    height: 80,
-    backgroundColor: "black",
-  },
-  headerTextContainer: {
-    zIndex: 1000,
-    elevation: 1000,
-    alignItems: "center",
-    justifyContent: "center",
-    position: "absolute",
-    top: 0,
-    right: 0,
-    left: 0,
-    height: 70,
-  },
-  headerText: {
-    color: "white",
-    fontSize: 26,
-    marginTop: 20,
-  },
-});
+interface ListProps {
+  data: PlanetDataType;
+}
 
-const scrollViewRef: React.Ref<any> = createRef();
+export type ItemPressCallbackType = (
+  isOpen: boolean,
+  index: number
+) => Animated.CompositeAnimation;
 
-const List = ({ data }) => {
-  const [isItemOpen, setIsItemOpen] = useState(false);
+const List: React.SFC<ListProps> = ({ data }) => {
+  const scrollViewRef = useRef<typeof Animated.ScrollView>(null);
 
-  const animation = useRef(new Animated.Value(0)).current;
+  const [isItemOpen, setIsItemOpen] = useState<boolean>(false);
 
-  const handleItemPress = (isOpen, index) => {
+  const animation = useRef<Animated.AnimatedValue>(new Animated.Value(0))
+    .current;
+
+  const handleItemPress: ItemPressCallbackType = (isOpen, index) => {
     setIsItemOpen(isOpen);
     scrollViewRef?.current?.getNode()?.scrollTo({ y: 0 });
+
     return Animated.timing(animation, {
       toValue: isOpen ? index * -LIST_ITEM_HEIGHT - 80 : 0,
       duration: 350,
     });
   };
 
-  const animatedStyles = {
+  const scrollViewAnimatedStyles = {
     transform: [{ translateY: animation }],
   };
 
-  const viewStyles = {
+  const containerAnimatedStyles = {
     height: animation.interpolate({
       inputRange: [-900, 0],
       outputRange: [window.height + 900, window.height],
@@ -68,11 +51,12 @@ const List = ({ data }) => {
   });
 
   return (
-    <Animated.View style={viewStyles}>
+    <Animated.View style={containerAnimatedStyles}>
       <Animated.ScrollView
-        style={[animatedStyles]}
+        style={scrollViewAnimatedStyles}
         showsVerticalScrollIndicator={false}
         scrollEnabled={!isItemOpen}
+        // @ts-ignore: Type is incorrect in DefinitelyTyped library. Will raise a PR with a fix soon.
         ref={scrollViewRef}
       >
         <View style={styles.header} />
