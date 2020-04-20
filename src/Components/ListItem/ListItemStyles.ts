@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet } from "react-native";
 
 import Colors from "../../Config/Colors";
 import { LIST_ITEM_HEIGHT, window } from "../../Config/constants";
@@ -42,13 +42,37 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: Colors.offWhite,
   },
+  nickNameText: {
+    fontSize: 22,
+    textAlign: "center",
+    lineHeight: 25,
+    marginTop: 20,
+    color: Colors.offWhite,
+  },
+  tagLineText: {
+    textAlign: "center",
+    lineHeight: 25,
+    marginTop: 20,
+    position: "absolute",
+    bottom: 120,
+  },
+  bottomText: {
+    fontSize: 16,
+    textAlign: "center",
+    marginTop: 15,
+  },
+  backgroundImage: {
+    position: "absolute",
+    height: window.height,
+    width: window.width,
+  },
   solarSystemPositionContainer: {
     height: 80,
     position: "absolute",
     bottom: 0,
     width: window.width,
     paddingHorizontal: 20,
-    paddingVertical: 10
+    paddingVertical: 10,
   },
 });
 

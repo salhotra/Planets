@@ -154,37 +154,24 @@ const ListItem: React.SFC<ListItemProps> = ({
     opacity: showPlanetDataAnimation,
   };
 
+  const planetName = planet.name.toLowerCase();
+
   return (
     <TouchableOpacity onPress={handlePress} activeOpacity={1}>
       <>
         <Animated.Image
           source={planet.background}
-          style={[
-            {
-              position: "absolute",
-              height: window.height,
-              width: window.width,
-            },
-          ]}
+          style={styles.backgroundImage}
           resizeMode={"cover"}
         />
         <Animated.View style={[styles.container, animatedStyles]}>
           <Animated.Text
-            style={[
-              styles.nameText,
-              {
-                fontSize: 22,
-                textAlign: "center",
-                lineHeight: 25,
-                marginTop: 20,
-              },
-              planetInfoAnimatedStyles,
-            ]}
+            style={[styles.nickNameText, planetInfoAnimatedStyles]}
           >
             {planet.nickName}
           </Animated.Text>
           <Animated.Image
-            source={Images[planet.name.toLowerCase()]}
+            source={Images[planetName]}
             style={[
               styles.planet,
               planet.hasRing
@@ -203,13 +190,7 @@ const ListItem: React.SFC<ListItemProps> = ({
           <Animated.Text
             style={[
               styles.nameText,
-              {
-                textAlign: "center",
-                lineHeight: 25,
-                marginTop: 20,
-                position: "absolute",
-                bottom: 120,
-              },
+              styles.tagLineText,
               planetInfoAnimatedStyles,
             ]}
           >
@@ -224,12 +205,7 @@ const ListItem: React.SFC<ListItemProps> = ({
           >
             <PositionInSolarSystem highlightIndex={index} />
 
-            <Text
-              style={[
-                styles.nameText,
-                { fontSize: 16, textAlign: "center", marginTop: 15 },
-              ]}
-            >
+            <Text style={[styles.nameText, styles.bottomText]}>
               1 Year = {planet.lengthOfYear}
             </Text>
           </Animated.View>

@@ -1,4 +1,4 @@
-export default {
+const Images: {[key: string]: string} = {
   mercury: require('../../assets/Images/mercury.png'),
   venus: require('../../assets/Images/venus.png'),
   earth: require('../../assets/Images/earth.png'),
@@ -8,3 +8,5 @@ export default {
   uranus: require('../../assets/Images/uranus.png'),
   neptune: require('../../assets/Images/neptune.png'),
 };
+
+export default Images;
