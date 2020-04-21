@@ -6,7 +6,7 @@ import styles from "./ListItemStyles";
 
 import type { PlanetDataItemType } from "../../Config/planetData";
 import { ItemPressCallbackType } from "../List/List";
-import { LIST_ITEM_HEIGHT, window } from "../../Config/constants";
+import { LIST_ITEM_HEIGHT, ANIMATION_CONSTANTS, window } from "../../Config/constants";
 import Images from "../../Config/Images";
 
 interface ListItemProps {
@@ -34,7 +34,7 @@ const ListItem: React.SFC<ListItemProps> = ({
     const parallelAnimations = [
       Animated.timing(heightAnimation, {
         toValue: isOpen ? LIST_ITEM_HEIGHT : window.height,
-        duration: 350,
+        duration: ANIMATION_CONSTANTS.itemOpenDuration,
       }),
       onPressCallback(!isOpen, index),
     ];
@@ -42,7 +42,7 @@ const ListItem: React.SFC<ListItemProps> = ({
     if (isOpen) {
       const closingRotationAnimation = Animated.timing(planetRotation, {
         toValue: 0,
-        duration: 350,
+        duration: ANIMATION_CONSTANTS.itemOpenDuration,
       });
 
       Animated.parallel([
@@ -59,12 +59,12 @@ const ListItem: React.SFC<ListItemProps> = ({
           ...parallelAnimations,
           Animated.timing(planetRotation, {
             toValue: 1,
-            duration: 900,
+            duration: ANIMATION_CONSTANTS.planetRotationDuration,
           }),
         ]),
         Animated.timing(showPlanetDataAnimation, {
           toValue: 1,
-          duration: 500,
+          duration: ANIMATION_CONSTANTS.planetInfoDisplayDuration,
         }),
       ]).start();
     }

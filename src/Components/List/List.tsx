@@ -1,8 +1,8 @@
 import React, { useRef, useEffect, useState } from "react";
 import { Animated, Dimensions, View, StatusBar, Text } from "react-native";
 
-import type { PlanetDataType } from "../../Config/planetData";
-import { LIST_ITEM_HEIGHT } from "../../Config/constants";
+import { PlanetDataType, planets } from "../../Config/planetData";
+import { LIST_ITEM_HEIGHT, ANIMATION_CONSTANTS } from "../../Config/constants";
 import ListItem from "../ListItem";
 import styles from "./ListStyles";
 
@@ -31,7 +31,7 @@ const List: React.SFC<ListProps> = ({ data }) => {
 
     return Animated.timing(animation, {
       toValue: isOpen ? index * -LIST_ITEM_HEIGHT - 80 : 0,
-      duration: 350,
+      duration: ANIMATION_CONSTANTS.itemOpenDuration,
     });
   };
 
